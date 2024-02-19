@@ -17,7 +17,7 @@ const userSchema = new Schema({
         trim: true,
         lowercase: true,
     },
-    fullname: {
+    fullName: {
         type: String,
         required: true,
         trim: true,
@@ -49,7 +49,7 @@ const userSchema = new Schema({
 //data save hone se pehle password ko hash karna hain then ye middleware use karenge, jaga save ek event hain
 userSchema.pre('save', async function(next){
     if(!this.isModified('password')) return next();//if password is not modified then return next, basically agar password change nahi hua toh next kar do
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 userSchema.methods.isCorrectPassword = async function(password){//password match karne ke liye login ke time pe
