@@ -54,6 +54,7 @@ userSchema.pre('save', async function(next){
 })
 userSchema.methods.isCorrectPassword = async function(password){//password match karne ke liye login ke time pe
     return await bcrypt.compare(password, this.password)
+    //this.password wo password hain wo encripted hain database me store hain user create hone ke baad
 }
 
 userSchema.methods.generateAccessToken = function(){
@@ -81,5 +82,7 @@ userSchema.methods.generateRefreshToken = function(){
         }
     )
 }
+
+//tokens in detail: jab hum user login karte to res ke saath cookie me access token and refresh token bhi send karte hain, and inn token ke expiry times hote so jab access token expire hojata tab user ko again login karna padta so user refresh token ka use karke access token ko refresh karwa leta, how refresh token works: hum database me refresh token save karke rakhte, phir jab user server ko new access token ke liye request karta to jo refresh token user ke pass res me hain wo bhi wo send karta and then wo refresh token and database me stored refresh token agar match karta to user ko new access token provide kar diya jaata   
 
 export const User = mongoose.model('User', userSchema); 
